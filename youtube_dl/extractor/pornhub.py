@@ -263,7 +263,7 @@ class PornHubPlaylistBaseIE(InfoExtractor):
 
 
 class PornHubPlaylistIE(PornHubPlaylistBaseIE):
-    _VALID_URL = r'https?://(?:www\.)?pornhub\.com/playlist/(?P<id>\d+)'
+    _VALID_URL = r'https?://(?:[a-z]+\.)?pornhub\.com/playlist/(?P<id>\d+)'
     _TESTS = [{
         'url': 'http://www.pornhub.com/playlist/4667351',
         'info_dict': {
