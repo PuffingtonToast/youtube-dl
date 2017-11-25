@@ -375,7 +375,7 @@ from .francetv import (
     FranceTVIE,
     FranceTVEmbedIE,
     FranceTVInfoIE,
-    GenerationQuoiIE,
+    GenerationWhatIE,
     CultureboxIE,
 )
 from .freesound import FreesoundIE
@@ -391,7 +391,6 @@ from .gameone import (
     GameOneIE,
     GameOnePlaylistIE,
 )
-from .gamersyde import GamersydeIE
 from .gamespot import GameSpotIE
 from .gamestar import GameStarIE
 from .gaskrank import GaskrankIE
