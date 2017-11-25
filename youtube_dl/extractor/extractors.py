@@ -345,7 +345,6 @@ from .filmon import (
     FilmOnIE,
     FilmOnChannelIE,
 )
-from .firstpost import FirstpostIE
 from .firsttv import FirstTVIE
 from .fivemin import FiveMinIE
 from .fivetv import FiveTVIE
