@@ -857,8 +857,8 @@ from .radiofrance import RadioFranceIE
 from .rai import (
     RaiPlayIE,
     RaiPlayLiveIE,
+    RaiPlayPlaylistIE,
     RaiIE,
-    RaiPlaylistIE,
 )
 from .rbmaradio import RBMARadioIE
 from .rds import RDSIE
