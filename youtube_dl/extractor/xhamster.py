@@ -1,9 +1,10 @@
 from __future__ import unicode_literals
 
 import re
+import itertools
 
 from .common import InfoExtractor
-from ..compat import compat_str
+from ..compat import compat_str, compat_HTTPError
 from ..utils import (
     clean_html,
     determine_ext,
@@ -13,6 +14,7 @@ from ..utils import (
     parse_duration,
     try_get,
     unified_strdate,
+    orderedSet
 )
 
 
@@ -316,3 +318,34 @@ class XHamsterEmbedIE(InfoExtractor):
             video_url = dict_get(vars, ('downloadLink', 'homepageLink', 'commentsLink', 'shareUrl'))
 
         return self.url_result(video_url, 'XHamster')
+
+
+class XHamsterUserVideosIE(InfoExtractor):
+    _VALID_URL = r'https?://(?:[a-z]+\.)?xhamster\.com/users/(?P<id>.+?)/videos/?'
+
+    def _extract_video_urls(cls, webpage):
+        if '_VIDEO_RE' not in cls.__dict__:
+            cls._VIDEO_RE = re.compile(
+                r'href="(?P<link>https?://[a-z]*?\.?xhamster\.com/(?:movies/\d+/[^"]*\.html|videos/[^/]*-\d+)[^"]*)"')
+        return orderedSet(cls._VIDEO_RE.findall(webpage))
+
+    def _real_extract(self, url):
+        user_id = self._match_id(url)
+
+        all_entries = []
+        for page_num in itertools.count(1):
+            try:
+                separator = '' if url.endswith('/') else '/'
+                page_url = url + separator + str(page_num)
+                webpage = self._download_webpage(page_url, user_id, 'Downloading page %d at %s' % (page_num, page_url))
+            except ExtractorError as e:
+                if isinstance(e.cause, compat_HTTPError) and e.cause.code == 404:
+                    break
+                raise
+            video_urls = self._extract_video_urls(webpage)
+            page_entries = [self.url_result(vid_url) for vid_url in video_urls]
+            if not page_entries:
+                break
+            all_entries += [self.url_result(vid_url, ie=XHamsterIE.ie_key()) for vid_url in video_urls]
+
+        return self.playlist_result(all_entries, user_id, user_id, '{} user videos.'.format(user_id))
