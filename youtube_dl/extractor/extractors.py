@@ -1144,6 +1144,7 @@ from .udemy import (
 from .udn import UDNEmbedIE
 from .uktvplay import UKTVPlayIE
 from .digiteka import DigitekaIE
+from .umg import UMGDeIE
 from .unistra import UnistraIE
 from .unity import UnityIE
 from .uol import UOLIE
